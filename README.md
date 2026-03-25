@@ -1,2 +1,0 @@
-# Innowise
-internship tasks
