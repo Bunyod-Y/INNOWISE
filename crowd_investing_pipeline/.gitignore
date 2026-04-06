@@ -1,0 +1,16 @@
+# Environments
+spark_env/
+myenv/
+venv/
+env/
+
+# Python Cache
+__pycache__/
+*.pyc
+
+# Spark Checkpoints and Logs
+/tmp/spark_checkpoints/
+*.log
+
+# OS generated files
+.DS_Store
