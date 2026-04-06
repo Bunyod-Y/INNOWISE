@@ -1,0 +1,32 @@
+services:
+  # 1. MongoDB (Simulating Azure Cosmos DB - User Profiles & Playlists)
+  mongodb:
+    image: mongo:latest
+    container_name: music_mongo
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: adminpassword
+
+  # 2. RabbitMQ (Message Broker for live music streaming events)
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: music_rabbitmq
+    ports:
+      - "5672:5672"   # Standard AMQP port for data
+      - "15672:15672" # Web UI port
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: adminpassword
+
+  # 3. PostgreSQL (Simulating Azure Synapse Data Warehouse)
+  postgres_dwh:
+    image: postgres:15-alpine
+    container_name: music_synapse_dwh
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: adminpassword
+      POSTGRES_DB: synapse_dwh
