@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  log-analyzer:
+    build: .
+    container_name: log_analyzer
+    volumes:
+      # Mount your local data directory to the container
+      - ./data:/app/data
+    environment:
+      - PYTHONUNBUFFERED=1
