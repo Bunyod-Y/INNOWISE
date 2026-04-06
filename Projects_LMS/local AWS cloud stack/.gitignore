@@ -1,0 +1,15 @@
+cat <<EOT >> .gitignore
+
+# Data and metrics
+data/raw/
+data/split_months/
+data/metrics/
+*.csv
+
+# Lambda deployment packages
+lambda/package/
+*.zip
+
+# Environment variables
+.env
+EOT
