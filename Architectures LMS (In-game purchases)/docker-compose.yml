@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  # 1. Our Data Warehouse (Replacing Azure Synapse/SQL)
+  postgres:
+    image: postgres:15
+    container_name: gcomm_postgres
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: adminpassword
+      POSTGRES_DB: gcomm_dw
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - gcomm_network
+
+  # 2. Our Message Broker (Replacing Azure Service Bus / RabbitMQ cloud)
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: gcomm_rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    ports:
+      - "5672:5672"   # Message broker port
+      - "15672:15672" # Management UI port
+    networks:
+      - gcomm_network
+
+  # 3. Our Local Data Lake (Replacing Azure Data Lake)
+  minio:
+    image: minio/minio
+    container_name: gcomm_minio
+    environment:
+      MINIO_ROOT_USER: admin
+      MINIO_ROOT_PASSWORD: adminpassword
+    command: server /data --console-address ":9001"
+    ports:
+      - "9000:9000"   # API port
+      - "9001:9001"   # Web UI console port
+    volumes:
+      - minio_data:/data
+    networks:
+      - gcomm_network
+
+# Define persistent storage volumes so we don't lose data when containers stop
+volumes:
+  postgres_data:
+  minio_data:
+
+# Define a custom network so containers can resolve each other by container_name
+networks:
+  gcomm_network:
+    driver: bridge
